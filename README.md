@@ -1,5 +1,7 @@
 # Intacct Web Services Rest Api version 3 in Go
 
+[![GoDoc](https://godoc.org/github.com/jfcote87/intacct?status.svg)](https://godoc.org/github.com/jfcote87/intacct)
+
 The intacct package provides a service to execute and evaluate the generic
 [Sage Intacct Web Service](https://developer.intacct.com/web-services/) functions
 to read/update/describe Sage Intacct objects/tables. The following example demonstrates
