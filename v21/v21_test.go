@@ -2,7 +2,6 @@
 // All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-
 package v21_test
 
 import (
@@ -102,7 +101,7 @@ func TestGetSupdoc(t *testing.T) {
 			Supdocdescription: "",
 			SupdocfolderName:  "Folder",
 			Attachments: []v21.Attachment{
-				v21.Attachment{
+				{
 					AttachmentName: "doc1",
 					AttachmentType: "txt",
 					AttachmentData: []byte("file bytes"),
