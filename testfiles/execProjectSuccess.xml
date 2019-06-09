@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <control>
+        <status>success</status>
+        <senderid>AAAAAAAA</senderid>
+        <controlid>1543102188</controlid>
+        <uniqueid>false</uniqueid>
+        <dtdversion>3.0</dtdversion>
+    </control>
+    <operation>
+        <authentication>
+            <status>success</status>
+            <userid>UUUU</userid>
+            <companyid>ZZZZZZZ</companyid>
+            <locationid></locationid>
+            <sessiontimestamp>2018-11-24T15:29:48-08:00</sessiontimestamp>
+        </authentication>
+        <result>
+            <status>success</status>
+            <function>readByQuery</function>
+            <controlid>e2a84020-e094-4dd8-97ed-6447592ecd47</controlid>
+            <data listtype="project" count="5" totalcount="35" numremaining="30" resultId="7765623336W-ne68CoA4gAAEEhD7EAAAAP4">
+                <project>
+                    <RECORDNO>989</RECORDNO>
+                    <PROJECTID>A17-ADVC</PROJECTID>
+                    <NAME>Advisory Council</NAME>
+                </project>
+                <project>
+                    <RECORDNO>1002</RECORDNO>
+                    <PROJECTID>A17-CONF01</PROJECTID>
+                    <NAME>CONF Program</NAME>
+                </project>
+                <project>
+                    <RECORDNO>4</RECORDNO>
+                    <PROJECTID>A17-Lecture1</PROJECTID>
+                    <NAME>A17-Lecture1</NAME>
+                </project>
+                <project>
+                    <RECORDNO>5</RECORDNO>
+                    <PROJECTID>A17-Lecture2</PROJECTID>
+                    <NAME>A17-Lecture2</NAME>
+                </project>
+                <project>
+                    <RECORDNO>990</RECORDNO>
+                    <PROJECTID>A17-READ01</PROJECTID>
+                    <NAME>Readers</NAME>
+                </project>
+            </data>
+        </result>
+        <result>
+            <status>success</status>
+            <function>read</function>
+            <controlid>19c628be-6bb3-4798-b535-c373b1186584</controlid>
+            <data listtype="PROJECT" count="1">
+                <PROJECT>
+                    <RECORDNO>1423</RECORDNO>
+                    <PROJECTID>Fellow PD1</PROJECTID>
+                    <NAME>Program Development1</NAME>
+                </PROJECT>
+            </data>
+        </result>
+    </operation>
+</response>

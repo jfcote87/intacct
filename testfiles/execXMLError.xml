@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <control>
+        <status>failure</status>
+        <senderid>senderid</senderid>
+        <controlid>1543089995</controlid>
+        <uniqueid>false</uniqueid>
+        <dtdversion>3.0</dtdversion>
+    </control>
+    <errormessage>
+        <error>
+            <errorno>XL03000003</errorno>
+            <description></description>
+            <description2>XML Parse schema error: Fatal Error 76: Opening and ending tag mismatch: PROJECTID line 18 and PROJECT. Line: 18, column: 62.</description2>
+            <correction></correction>
+        </error>
+        <error>
+            <errorno>XL03000003</errorno>
+            <description></description>
+            <description2>XML Parse schema error: Fatal Error 76: Opening and ending tag mismatch: PROJECT line 17 and CUSTOMER. Line: 21, column: 32.</description2>
+            <correction></correction>
+        </error>
+    </errormessage>
+</response>

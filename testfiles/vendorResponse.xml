@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <control>
+        <status>success</status>
+        <senderid>SENDERID</senderid>
+        <controlid>LF14b6850ddd6f4cbe</controlid>
+        <uniqueid>false</uniqueid>
+        <dtdversion>3.0</dtdversion>
+    </control>
+    <operation>
+        <authentication>
+            <status>success</status>
+            <userid>xml_gateway</userid>
+            <companyid>XXXX</companyid>
+            <sessiontimestamp>2019-04-18T07:43:42-07:00</sessiontimestamp>
+        </authentication>
+        <result>
+            <status>success</status>
+            <function>read</function>
+            <controlid>LF14b6850ddd6f4cbe</controlid>
+            <data listtype="VENDOR" count="2">
+                <VENDOR>
+                    <RECORDNO>29181</RECORDNO>
+                    <VENDORID>100001TEST</VENDORID>
+                    <NAME>TEST VENDOR 1099</NAME>
+                    <NAME1099>VENDOR TEST</NAME1099>
+                </VENDOR>
+                <VENDOR>
+                    <RECORDNO>29182</RECORDNO>
+                    <VENDORID>100002TEST</VENDORID>
+                    <NAME>TEST VENDOR 2</NAME>
+                    <NAME1099>VENDOR TEST 2</NAME1099>
+                    <PARENTKEY/>
+                    <PARENTID/>
+                    <PARENTNAME/>
+                </VENDOR>
+            </data>
+        </result>
+        <result>
+            <status>success</status>
+            <function>readByQuery</function>
+            <controlid>LFAAAAAA</controlid>
+            <data listtype="VENDOR" count="1" totalcount="1" numremaining="5" resultId="aaaaa">
+                <VENDOR>
+                    <RECORDNO>29181</RECORDNO>
+                    <VENDORID>100001TEST</VENDORID>
+                    <NAME>TEST VENDOR 1099</NAME>
+                    <NAME1099>VENDOR TEST</NAME1099>
+                    <PARENTKEY>1234</PARENTKEY>
+                    <PARENTID/>
+                    <PARENTNAME/>
+                </VENDOR>
+            </data>
+        </result>
+    </operation>
+</response>

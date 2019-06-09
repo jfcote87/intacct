@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <control>
+    <status>success</status>
+    <senderid>xxxxxx</senderid>
+    <controlid>efaa1f0c-58dc-4377-bf26-6aa1d8442fc0</controlid>
+    <uniqueid>false</uniqueid>
+    <dtdversion>3.0</dtdversion>
+  </control>
+  <operation>
+    <authentication>
+      <status>failure</status>
+      <userid>xml_gateway</userid>
+      <companyid>XXXXX</companyid>
+    </authentication>
+    <errormessage>
+      <error>
+        <errorno>XL03000006</errorno>
+        <description></description>
+        <description2>Sign-in information is incorrect</description2>
+        <correction></correction>
+      </error>
+    </errormessage>
+  </operation>
+</response>

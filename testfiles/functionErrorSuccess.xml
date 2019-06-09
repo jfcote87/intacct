@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <control>
+        <status>success</status>
+        <senderid>*************</senderid>
+        <controlid>1559244593</controlid>
+        <uniqueid>false</uniqueid>
+        <dtdversion>3.0</dtdversion>
+    </control>
+    <operation>
+        <authentication>
+            <status>success</status>
+            <userid>xml_gateway</userid>
+            <companyid>*****</companyid>
+            <locationid>*****</locationid>
+            <sessiontimestamp>2019-05-30T12:29:53-07:00</sessiontimestamp>
+            <sessiontimeout>2019-05-30T18:29:53-07:00</sessiontimeout>
+        </authentication>
+        <result>
+            <status>failure</status>
+            <function>read</function>
+            <controlid>testFunctionId</controlid>
+            <errormessage>
+                <error>
+                    <errorno>Invalid fields list x</errorno>
+                    <description></description>
+                    <description2></description2>
+                    <correction></correction>
+                </error>
+            </errormessage>
+        </result>
+        <result>
+            <status>success</status>
+            <function>read</function>
+            <controlid>abcdef</controlid>
+            <data listtype="APBILL" count="1">
+                <APBILL>
+                    <RECORDNO>16747</RECORDNO>
+                    <VENDORID>407258</VENDORID>
+                    <VENDORNAME>FOSSE BOB</VENDORNAME>
+                    <RECORDID>E18-6465</RECORDID>
+                </APBILL>
+            </data>
+        </result>
+        <result>
+            <status>failure</status>
+            <function>read</function>
+            <controlid>testFunctionId</controlid>
+            <errormessage>
+                <error>
+                    <errorno>Invalid fields list y</errorno>
+                    <description></description>
+                    <description2></description2>
+                    <correction></correction>
+                </error>
+            </errormessage>
+        </result>
+    </operation>
+</response>
