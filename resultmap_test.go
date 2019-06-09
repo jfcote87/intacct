@@ -8,7 +8,6 @@ package intacct_test
 import (
 	"encoding/xml"
 	"reflect"
-	"strings"
 	"testing"
 	"time"
 
@@ -182,10 +181,6 @@ func TestResultMap(t *testing.T) {
 	}
 	if len(vals) != 3 || vals[0].String("@id") != "123" || vals[1].String("CITY") != "Indianapolis" {
 		t.Errorf("ReadArray expected [map[@id:123 NAME:Contact1 CITY:Carmel] map[@id:124 NAME:Contact2 CITY:Indianapolis]]; got %v", vals)
-	}
-	vals, err = rm.ReadArray("NAME")
-	if err == nil || !strings.HasPrefix(err.Error(), "Not an ResultMap") {
-		t.Errorf("ReadArray expected Not an ResultMap errors; got %v", err)
 	}
 }
 

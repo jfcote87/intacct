@@ -177,7 +177,7 @@ func (r Reader) GetAll(ctx context.Context, sv *Service, resultSlice interface{}
 // CmdGetApiSession definition for an example of how to use Write to implement
 // other functions.
 type Writer struct {
-	// Cmd names the top level element.  If empty, Payload is marshalled directy
+	// Cmd names the top level element.  If empty, Payload is marshalled directly
 	Cmd string `xml:"-"`
 	// Payload may not be nil if Cmd is empty
 	Payload interface{}
@@ -285,7 +285,7 @@ func GetFinancialSetup() Function {
 	return &Writer{Cmd: "etFinancialSetup"}
 }
 
-// Inspector performs a Inpection macro returning the definition
+// Inspector performs a inspection macro returning the definition
 // of the named Object.  For a list of all objects, set Object to "*".
 type Inspector struct {
 	XMLName   xml.Name `xml:"inspect"`

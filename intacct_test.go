@@ -78,7 +78,7 @@ func TestResponse(t *testing.T) {
 			t.Errorf("%s expected success = %v and Errorno \"%s\"; got success = %v and ErrorNo = %q", re.FN, re.IsSuccess, re.ErrorNo, isSuccess, details.ErrorNo)
 		}
 		if isOpError != re.IsOpErr {
-			t.Errorf("%s expeced isOpError = %v; got %v", re.FN, re.IsOpErr, isOpError)
+			t.Errorf("%s expected isOpError = %v; got %v", re.FN, re.IsOpErr, isOpError)
 		}
 	}
 }

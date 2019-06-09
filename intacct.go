@@ -460,7 +460,7 @@ var (
 	errNilLogin = errors.New("userid/password not set, unable to login or refresh sessionID")
 )
 
-// ControlConfig allows developer to specifiy transactional
+// ControlConfig allows developer to specify transactional
 // data for a Request.
 type ControlConfig struct {
 	IsTransaction     bool

@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/jfcote87/intacct"
-	"github.com/jfcote87/intacct/v21"
+	v21 "github.com/jfcote87/intacct/v21"
 )
 
 func TestGetList(t *testing.T) {
@@ -111,6 +111,9 @@ func TestGetSupdoc(t *testing.T) {
 		},
 	}
 	b, err := xml.Marshal(createDoc)
+	if err != nil {
+		t.Errorf("unable to marshal createsupdoc: %v", err)
+	}
 
 	var testStruct = struct {
 		XMLName xml.Name `xml:"create_supdoc"`
@@ -125,7 +128,7 @@ func TestGetSupdoc(t *testing.T) {
 	}
 	// wanting base64 standard encoding`
 	if testStruct.Name != "doc1" || testStruct.Type != "txt" || testStruct.Data != "ZmlsZSBieXRlcw==" {
-		t.Errorf("expeced name: doc1, type: txt, data: ZmlsZSBieXRlcw==; got %s %s %s", testStruct.Name, testStruct.Type, testStruct.Data)
+		t.Errorf("expected name: doc1, type: txt, data: ZmlsZSBieXRlcw==; got %s %s %s", testStruct.Name, testStruct.Type, testStruct.Data)
 	}
 
 	var resp *intacct.Response

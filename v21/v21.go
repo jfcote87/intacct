@@ -244,6 +244,9 @@ func (a *Attachment) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 			switch t.Name.Local {
 			case "attachmentdata":
 				a.AttachmentData, err = base64.StdEncoding.DecodeString(s)
+				if err != nil {
+					return err
+				}
 			case "attachmentname":
 				a.AttachmentName = s
 			case "attachmenttype":

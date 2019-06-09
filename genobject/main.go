@@ -190,7 +190,6 @@ func (fo *fieldOutput) getFieldLabels(xnm string, f intacct.FieldDetail) (string
 
 	snm := cases.Camel(nr.Replace(fdlbl))
 
-	ok = true
 	if _, ok = fo.PrevNames[snm]; ok {
 
 		snm = makeName(xnm)
