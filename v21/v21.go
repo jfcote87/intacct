@@ -10,7 +10,6 @@ package v21
 import (
 	"encoding/base64"
 	"encoding/xml"
-	"log"
 	"time"
 
 	"github.com/jfcote87/intacct"
@@ -64,8 +63,6 @@ func (dx DateYMD) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 // UnmarshalXML from Y-M-D format
 func (dx *DateYMD) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-
-	log.Printf("Stat Element: %s", start.Name.Local)
 	var t = struct {
 		XMLName xml.Name
 		Year    int `xml:"year"`

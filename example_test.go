@@ -13,7 +13,7 @@ import (
 	"log"
 
 	"github.com/jfcote87/intacct"
-	"github.com/jfcote87/intacct/v21"
+	v21 "github.com/jfcote87/intacct/v21"
 )
 
 // Example Config file.
@@ -187,10 +187,10 @@ func ExampleReader_readall() {
 		log.Fatalf("Configuration error: %v", err)
 	}
 	var results []Vendor
-	if err = intacct.ReadByQuery("VENDOR","").
-		Fields("RECORDNO","VENDORID").
+	if err = intacct.ReadByQuery("VENDOR", "").
+		Fields("RECORDNO", "VENDORID").
 		GetAll(ctx, sv, &results); err != nil {
-			log.Fatalf("getall error: %v",err)
-		}
+		log.Fatalf("getall error: %v", err)
+	}
 	log.Printf("Total Records: %d", len(results))
 }
