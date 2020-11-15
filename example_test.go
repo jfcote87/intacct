@@ -194,3 +194,37 @@ func ExampleReader_readall() {
 	}
 	log.Printf("Total Records: %d", len(results))
 }
+
+// ExampleQuery_GetAll demonstrates using an intacct service to query
+// records using the new query function. GetAll reads all pages of the
+// query.
+func ExampleQuery_GetAll() {
+	var ctx context.Context = context.Background()
+
+	configReader := bytes.NewReader([]byte(sessionConfig))
+	sv, err := intacct.ServiceFromConfigJSON(configReader)
+	if err != nil {
+		log.Fatalf("Configuration error: %v", err)
+	}
+
+	var projects []Project
+
+	var filter = &intacct.Filter{}
+	filter.EqualTo("STATUS", "active").In("PARENTID", "ID01", "ID02")
+	var stmt = &intacct.Query{
+		Object: "PROJECT",
+		Select: intacct.Select{
+			Fields: []string{"RECORDNO", "PROJECTID", "NAME", "DESCRIPTION", "PARENTNAME"},
+		},
+		OrderBy: []intacct.OrderBy{{Field: "PROJECTID"}},
+		Filter:  *filter,
+	}
+
+	if err := stmt.GetAll(ctx, sv, &projects); err != nil {
+		log.Printf("read error %v", err)
+		return
+	}
+	for _, p := range projects {
+		fmt.Printf("%s", p.Projectname)
+	}
+}
