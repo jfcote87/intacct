@@ -21,7 +21,7 @@ type Query struct {
 	XMLName         xml.Name      `xml:"query"`
 	Object          string        `xml:"object"`
 	Select          Select        `xml:"select"`
-	Filter          Filter        `xml:"filter"`
+	Filter          *Filter       `xml:"filter,omitempty"`
 	OrderBy         []OrderBy     `xml:"orderby>order,omitempty"`
 	Options         *QueryOptions `xml:"options,omitempty"`
 	PageSz          int           `xml:"pagesize,omitempty"`
@@ -74,8 +74,9 @@ type Select struct {
 
 // OrderBy describes sort conditions
 type OrderBy struct {
-	Field      string `xml:"field"`
-	Descending bool   `xml:"ascending"`
+	XMLName    xml.Name `xml:"order"`
+	Field      string   `xml:"field,omitempty"`
+	Descending bool     `xml:"descending,omitempty"`
 }
 
 // MarshalXML used to create <descending> tag
@@ -103,8 +104,8 @@ func NewFilter() *Filter {
 // Filter is a heirarchy of criteria. Use function to add criteria
 type Filter struct {
 	XMLName xml.Name
-	Field   string   `xml:"field,omitempty"`
-	Value   []string `xml:"value,omitempty"`
+	Field   string     `xml:"field,omitempty"`
+	Value   FilterVals `xml:"value,omitempty"`
 	Filters []Filter
 }
 
@@ -127,6 +128,19 @@ func (f *Filter) newFilter(nm string) *Filter {
 		return &f.Filters[len(f.Filters)-1]
 	}
 	return &ret
+}
+
+// FilterVals handles proper marsheling of empty strings
+type FilterVals []string
+
+// MarshalXML output nothing for empty slice, value elements for all others
+func (fv FilterVals) MarshalXML(e *xml.Encoder, s xml.StartElement) error {
+	for _, val := range fv {
+		e.EncodeToken(s)
+		e.EncodeToken(xml.CharData(val))
+		e.EncodeToken(s.End())
+	}
+	return nil
 }
 
 func (f *Filter) add(nm, field string, values ...string) *Filter {

@@ -16,6 +16,7 @@ func TestFilter(t *testing.T) {
 	var f = intacct.NewFilter()
 	fa := f.And()
 	fa.EqualTo("FLD1", "Val1")
+	fa.EqualTo("FLD1a", "")
 	fa.NotEqualTo("FLD2", "Val2")
 	fa.LessThan("FLD3", "Val3").LessThanOrEqualTo("FLD4", "Val4")
 	fa.GreaterThan("FLD5", "Val5").GreaterThanOrEqualTo("FLD6", "Val6")
@@ -29,6 +30,8 @@ func TestFilter(t *testing.T) {
 		return
 	}
 	if f.Filters[0].XMLName.Local != "and" {
+		t.Errorf("expected and filter; got %s", f.Filters[0].XMLName.Local)
+		return
 
 	}
 	if f.Filters[1].XMLName.Local != "or" {
@@ -38,6 +41,7 @@ func TestFilter(t *testing.T) {
 
 	tests_and := []intacct.Filter{
 		{XMLName: xml.Name{Local: "equalto"}, Field: "FLD1", Value: []string{"Val1"}},
+		{XMLName: xml.Name{Local: "equalto"}, Field: "FLD1a", Value: []string{""}},
 		{XMLName: xml.Name{Local: "notequalto"}, Field: "FLD2", Value: []string{"Val2"}},
 		{XMLName: xml.Name{Local: "lessthan"}, Field: "FLD3", Value: []string{"Val3"}},
 		{XMLName: xml.Name{Local: "lessthanorequalto"}, Field: "FLD4", Value: []string{"Val4"}},
@@ -74,9 +78,8 @@ func TestOrderBy_MarshalXML(t *testing.T) {
 		orderby intacct.OrderBy
 		want    string
 	}{
-		// TODO: Add test cases.
 		{name: "t1", orderby: intacct.OrderBy{Field: "F1"}, want: "<order><field>F1</field></order>"},
-		{name: "t2", orderby: intacct.OrderBy{"F2", true}, want: "<order><field>F2</field><descending></descending></order>"},
+		{name: "t2", orderby: intacct.OrderBy{Field: "F2", Descending: true}, want: "<order><field>F2</field><descending></descending></order>"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -95,22 +98,23 @@ func TestOrderBy_MarshalXML(t *testing.T) {
 	}
 }
 
-/*
 func TestMarshal(t *testing.T) {
-	f := intacct.NewFilter().EqualTo("RECORDNO", "1").In("PROJECTID", "P1", "P2")
-	sx := intacct.Stmt{
+	var f *intacct.Filter
+	sx := intacct.Query{
 		Object: "PROJECT",
 		Select: intacct.Select{
 			Fields: []string{"RECORDNO", "PROJECTID", "NAME", "DESCRIPTION", "PARENTNAME"},
 			Min:    "PROJECTID",
 		},
 		OrderBy: []intacct.OrderBy{{Field: "PROJECTID"}, {Field: "NAME", Descending: true}},
-		Filter:  *f,
+		Filter:  f.EqualTo("RECORDNO", "1").In("PROJECTID", "P1", "P2").EqualTo("NAME", ""),
 	}
-	b, err := xml.MarshalIndent(sx, "", "    ")
+	b, err := xml.Marshal(sx)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-	t.Errorf("%s", b)
+	expect := `<query><object>PROJECT</object><select><field>RECORDNO</field><field>PROJECTID</field><field>NAME</field><field>DESCRIPTION</field><field>PARENTNAME</field><min>PROJECTID</min></select><filter><equalto><field>RECORDNO</field><value>1</value></equalto><in><field>PROJECTID</field><value>P1</value><value>P2</value></in><equalto><field>NAME</field><value></value></equalto></filter><orderby><order><field>PROJECTID</field></order><order><field>NAME</field><descending></descending></order></orderby></query>`
+	if expect != string(b) {
+		t.Errorf("expected marshal of %s; got %s", expect, b)
+	}
 }
-*/
