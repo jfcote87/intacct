@@ -22,7 +22,7 @@ type Query struct {
 	Object          string        `xml:"object"`
 	Select          Select        `xml:"select"`
 	Filter          *Filter       `xml:"filter,omitempty"`
-	OrderBy         []OrderBy     `xml:"orderby>order,omitempty"`
+	Sort            *QuerySort    `xml:"orderby,omitempty"`
 	Options         *QueryOptions `xml:"options,omitempty"`
 	PageSz          int           `xml:"pagesize,omitempty"`
 	Offset          int           `xml:"offset,omitempty"`
@@ -70,6 +70,11 @@ type Select struct {
 	Min    string   `xml:"min,omitempty"`
 	Max    string   `xml:"max,omitempty"`
 	Sum    string   `xml:"sum,omitempty"`
+}
+
+type QuerySort struct {
+	XMLName xml.Name  `xml:"orderby"`
+	Fields  []OrderBy `xml:"order"`
 }
 
 // OrderBy describes sort conditions

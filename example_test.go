@@ -209,16 +209,16 @@ func ExampleQuery_GetAll() {
 
 	var projects []Project
 
-	var filter *intacct.Filter
+	var filter = intacct.NewFilter()
+	filter.And().EqualTo("STATUS", "active").In("PARENTID", "ID01", "ID02")
 
-	//filter.EqualTo("STATUS", "active").In("PARENTID", "ID01", "ID02")
 	var stmt = &intacct.Query{
 		Object: "PROJECT",
 		Select: intacct.Select{
 			Fields: []string{"RECORDNO", "PROJECTID", "NAME", "DESCRIPTION", "PARENTNAME"},
 		},
-		OrderBy: []intacct.OrderBy{{Field: "PROJECTID"}},
-		Filter:  filter.EqualTo("STATUS", "active").In("PARENTID", "ID01", "ID02"),
+		Sort:   &intacct.QuerySort{Fields: []intacct.OrderBy{{Field: "PROJECTID"}}},
+		Filter: filter,
 	}
 
 	if err := stmt.GetAll(ctx, sv, &projects); err != nil {

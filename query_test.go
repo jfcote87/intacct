@@ -75,21 +75,17 @@ func TestFilter(t *testing.T) {
 func TestOrderBy_MarshalXML(t *testing.T) {
 	tests := []struct {
 		name    string
-		orderby intacct.OrderBy
+		orderby *intacct.QuerySort //intacct.OrderBy
 		want    string
 	}{
-		{name: "t1", orderby: intacct.OrderBy{Field: "F1"}, want: "<order><field>F1</field></order>"},
-		{name: "t2", orderby: intacct.OrderBy{Field: "F2", Descending: true}, want: "<order><field>F2</field><descending></descending></order>"},
+		{name: "t1", orderby: &intacct.QuerySort{Fields: []intacct.OrderBy{{Field: "F1"}}}, want: "<orderby><order><field>F1</field></order></orderby>"},
+		{name: "t2", orderby: &intacct.QuerySort{Fields: []intacct.OrderBy{{Field: "F2", Descending: true}}}, want: "<orderby><order><field>F2</field><descending></descending></order></orderby>"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			buff := &bytes.Buffer{}
 			e := xml.NewEncoder(buff)
-			err := tt.orderby.MarshalXML(e, xml.StartElement{Name: xml.Name{Local: "order"}})
-			if err != nil {
-				t.Errorf("%s encode %v", tt.name, err)
-				return
-			}
+			e.Encode(tt.orderby)
 			e.Flush()
 			if string(buff.Bytes()) != tt.want {
 				t.Errorf("%s expected %s; got %s", tt.name, tt.want, buff.Bytes())
@@ -106,8 +102,8 @@ func TestMarshal(t *testing.T) {
 			Fields: []string{"RECORDNO", "PROJECTID", "NAME", "DESCRIPTION", "PARENTNAME"},
 			Min:    "PROJECTID",
 		},
-		OrderBy: []intacct.OrderBy{{Field: "PROJECTID"}, {Field: "NAME", Descending: true}},
-		Filter:  f.EqualTo("RECORDNO", "1").In("PROJECTID", "P1", "P2").EqualTo("NAME", ""),
+		Sort:   &intacct.QuerySort{Fields: []intacct.OrderBy{{Field: "PROJECTID"}, {Field: "NAME", Descending: true}}},
+		Filter: f.EqualTo("RECORDNO", "1").In("PROJECTID", "P1", "P2").EqualTo("NAME", ""),
 	}
 	b, err := xml.Marshal(sx)
 	if err != nil {
