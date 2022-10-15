@@ -3,6 +3,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Package intacct implements the intacct webservices protocol
+// for accessing intacct data
+// https://developer.intacct.com/web-services/
 package intacct // import "github.com/jfcote87/intacct"
 
 import (

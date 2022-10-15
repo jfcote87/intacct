@@ -72,6 +72,7 @@ type Select struct {
 	Sum    string   `xml:"sum,omitempty"`
 }
 
+// QuerySort defined fields for sorting,
 type QuerySort struct {
 	XMLName xml.Name  `xml:"orderby"`
 	Fields  []OrderBy `xml:"order"`
@@ -103,7 +104,9 @@ type QueryOptions struct {
 
 // NewFilter returns an initialized Filter pointer
 func NewFilter() *Filter {
-	return &Filter{}
+	return &Filter{
+		XMLName: xml.Name{Local: "filter"},
+	}
 }
 
 // Filter is a heirarchy of criteria. Use function to add criteria
@@ -112,6 +115,17 @@ type Filter struct {
 	Field   string     `xml:"field,omitempty"`
 	Value   FilterVals `xml:"value,omitempty"`
 	Filters []Filter
+	parent  *Filter
+}
+
+// Parent returns the filter's parent (nil if no parent assigned) providing
+// a workable chaining process.
+// e.g. f := intacct.NewFilter().And().EqualTo("FLD","Value").EqualTo("FLD2","Value").Parent()
+func (f *Filter) Parent() *Filter {
+	if f == nil {
+		return nil
+	}
+	return f.parent
 }
 
 // And creates a new And filter and adds it to the method receiver's filter list. The
@@ -129,13 +143,14 @@ func (f *Filter) Or() *Filter {
 func (f *Filter) newFilter(nm string) *Filter {
 	ret := Filter{XMLName: xml.Name{Local: nm}}
 	if f != nil {
+		ret.parent = f
 		f.Filters = append(f.Filters, ret)
 		return &f.Filters[len(f.Filters)-1]
 	}
 	return &ret
 }
 
-// FilterVals handles proper marsheling of empty strings
+// FilterVals handles proper marshaling of empty strings
 type FilterVals []string
 
 // MarshalXML output nothing for empty slice, value elements for all others
@@ -156,6 +171,7 @@ func (f *Filter) add(nm, field string, values ...string) *Filter {
 		XMLName: xml.Name{Local: nm},
 		Field:   field,
 		Value:   values,
+		parent:  f,
 	})
 	return f
 }

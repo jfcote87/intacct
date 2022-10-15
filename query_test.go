@@ -3,12 +3,27 @@ package intacct_test
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/jfcote87/intacct"
 )
+
+func filterEqualto(idx int, f0, f1 *intacct.Filter) error {
+	if !reflect.DeepEqual(f0.XMLName, f1.XMLName) {
+		return fmt.Errorf("test %d expected XMLName %#v; got %#v", idx, f0.XMLName, f1.XMLName)
+	}
+	if f0.Field != f1.Field {
+		return fmt.Errorf("test %d expected field %s; got %s", idx, f0.Field, f1.Field)
+	}
+	if strings.Join(f0.Value, ":") != strings.Join(f1.Value, ":") {
+		return fmt.Errorf("test %d expected values %s; got %s", idx, strings.Join(f0.Value, ":"), strings.Join(f1.Value, ":"))
+	}
+	return nil
+}
 
 func TestFilter(t *testing.T) {
 	tm1 := time.Date(2020, 11, 01, 0, 0, 0, 0, time.UTC)
@@ -60,13 +75,13 @@ func TestFilter(t *testing.T) {
 	}
 
 	for i, fa := range f.Filters[0].Filters {
-		if !reflect.DeepEqual(fa, tests_and[i]) {
-			t.Errorf("expected %v, got %v", tests_and[i], fa)
+		if err := filterEqualto(i, &fa, &tests_and[i]); err != nil {
+			t.Error(err.Error())
 		}
 	}
 	for i, fo := range f.Filters[1].Filters {
-		if !reflect.DeepEqual(fo, tests_or[i]) {
-			t.Errorf("expected %v, got %v", tests_or[i], fo)
+		if err := filterEqualto(i, &fo, &tests_or[i]); err != nil {
+			t.Error(err.Error())
 		}
 	}
 

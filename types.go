@@ -47,32 +47,38 @@ func (dx Date) String() string {
 	return dx.t.Format("2006-01-02")
 }
 
-// MarshalXML to YYYY-MM-DD
-func (dx Date) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+// MarshalText formats Date for xml and json
+func (dx Date) MarshalText() ([]byte, error) {
 	if dx.IsNil() {
-		return nil
+		return nil, nil
 	}
-	return e.EncodeElement(dx.t.Format("2006-01-02"), start)
+	return []byte(dx.t.Format("2006-01-02")), nil
 }
 
-// UnmarshalXML from YYYY-MM-DD
-func (dx *Date) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	var s string
-	err := d.DecodeElement(&s, &start)
-	if err == nil {
-		if s == "" { // if blank make nil
-			dx.t = nil
-			return nil
-		}
-		var t time.Time
-		if strings.Count(s, "/") > 1 {
-			t, err = time.Parse("01/02/2006", s)
-		} else {
-			t, err = time.Parse("2006-01-02", s)
-		}
-		dx.t = &t
+// UnmarshalText parses string form Date
+func (dx *Date) UnmarshalText(text []byte) error {
+	if dx == nil {
+		return nil
 	}
-	return err
+	if len(text) == 0 {
+		dx.t = nil
+		return nil
+	}
+	s := string(text)
+	parseLayout := "01/02/2006"
+
+	if strings.Count(s, "/") == 0 {
+		parseLayout = "2006-01-02"
+	}
+	if len(s) > len(parseLayout) {
+		s = s[:len(parseLayout)]
+	}
+	t, err := time.Parse(parseLayout, s)
+	if err != nil {
+		return err
+	}
+	dx.t = &t
+	return nil
 }
 
 // Datetime used to handle intact read and readQuery date format
@@ -102,29 +108,46 @@ func (dt Datetime) String() string {
 	return dt.t.Format(time.RFC3339)
 }
 
-// MarshalXML to RFC3339 format
-func (dt Datetime) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	if dt.IsNil() {
-		return nil
-	}
-	return e.EncodeElement(dt.t.Format(time.RFC3339), start)
+// MarshalText formats Date for xml and json
+func (dt Datetime) MarshalText() ([]byte, error) {
+	return []byte(dt.String()), nil
 }
 
-// UnmarshalXML from YYYY-MM-DD
-func (dt *Datetime) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	var s string
-	err := d.DecodeElement(&s, &start)
+// UnmarshalText parses string form Date
+func (dt *Datetime) UnmarshalText(text []byte) error {
+	if dt == nil {
+		return nil
+	}
+	if len(text) == 0 {
+		dt.t = nil
+		return nil
+	}
+	s := string(text)
+	if strings.Count(s, "/") > 1 {
+		return dt.handleNotRFC3339(s)
+	}
+	return dt.handleRFC3339(s)
+}
+
+func (dt *Datetime) handleNotRFC3339(s string) error {
+	parseLayout := "01/02/2006 15:04:05"
+	if len(s) == 10 {
+		parseLayout = "01/02/2006"
+	}
+	t, err := time.Parse(parseLayout, s)
 	if err == nil {
-		if s == "" {
-			dt.t = nil
-			return nil
-		}
-		var t time.Time
-		if strings.Count(s, "/") > 1 {
-			t, err = time.Parse("01/02/2006 15:04:05", s)
-		} else {
-			t, err = time.Parse(time.RFC3339, s)
-		}
+		dt.t = &t
+	}
+	return err
+}
+
+func (dt *Datetime) handleRFC3339(s string) error {
+	parseLayout := time.RFC3339
+	if len(s) == 10 {
+		parseLayout = "2006-01-02"
+	}
+	t, err := time.Parse(parseLayout, s)
+	if err == nil {
 		dt.t = &t
 	}
 	return err
